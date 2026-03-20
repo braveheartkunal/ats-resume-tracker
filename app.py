@@ -17,11 +17,21 @@ else:
     st.error("⚠️ API Key not found. Please add GOOGLE_API_KEY to your Secrets or .env file.")
 
 def get_gemini_reponse(input_text, pdf_content, prompt):
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    # Combining inputs into a structured prompt for the model
-    full_prompt = f"Job Description: {input_text}\n\nResume Content: {pdf_content}\n\nTask: {prompt}"
-    response = model.generate_content(full_prompt)
-    return response.text
+    # This is a 'Mock AI' logic to keep your app running without an API key
+    keywords = ["python", "machine learning", "java", "sql", "communication", "teamwork"]
+    found = [word for word in keywords if word in pdf_content.lower()]
+    missing = [word for word in keywords if word not in pdf_content.lower()]
+    
+    score = (len(found) / len(keywords)) * 100
+    
+    return f"""
+    ### 📊 Analysis (Offline Mode)
+    * **Match Score:** {int(score)}%
+    * **Missing Keywords:** {", ".join(missing)}
+    * **Tips:** Use more technical keywords like {missing[0]} to increase your score!
+    
+    *Note: Connect a valid Google API Key to get full AI feedback.*
+    """
 
 def input_pdf_text(uploaded_file):
     reader = pdf.PdfReader(uploaded_file)
